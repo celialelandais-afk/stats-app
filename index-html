@@ -1,0 +1,70 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Statistics App</title>
+  https://cdn.jsdelivr.net/npm/chart.js
+  <style>
+    body { font-family: Arial; text-align: center; padding: 20px; }
+    textarea { width: 80%; height: 100px; }
+    canvas { max-width: 600px; margin: 20px auto; }
+  </style>
+</head>
+<body>
+
+<h1>Statistics Calculator</h1>
+<p>Enter numbers separated by commas:</p>
+<textarea id="dataInput"></textarea><br><br>
+<button onclick="analyzeData()">Analyze</button>
+
+<h2>Results</h2>
+<p id="results"></p>
+
+<canvas id="histogram"></canvas>
+
+<script>
+function analyzeData() {
+  let data = document.getElementById('dataInput').value.split(',').map(Number);
+  data.sort((a,b)=>a-b);
+
+  let n = data.length;
+  let mean = data.reduce((a,b)=>a+b,0)/n;
+
+  let median = n % 2 === 0 ? (data[n/2-1]+data[n/2])/2 : data[Math.floor(n/2)];
+
+  let variance = data.reduce((a,b)=>a + Math.pow(b-mean,2),0)/(n-1);
+  let sd = Math.sqrt(variance);
+
+  document.getElementById('results').innerHTML =
+    `Mean: ${mean.toFixed(2)} <br> Median: ${median} <br> SD: ${sd.toFixed(2)}`;
+
+  createHistogram(data);
+}
+
+function createHistogram(data) {
+  let bins = {};
+
+  data.forEach(val => {
+    let rounded = Math.floor(val/10)*10;
+    bins[rounded] = (bins[rounded] || 0) + 1;
+  });
+
+  let labels = Object.keys(bins);
+  let counts = Object.values(bins);
+
+  new Chart(document.getElementById('histogram'), {
+    type: 'bar',
+    data: {
+      labels: labels,
+      datasets: [{
+        label: 'Frequency',
+        data: counts
+      }]
+    }
+  });
+}
+</script>
+
+</body>
+</html>
