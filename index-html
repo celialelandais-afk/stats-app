@@ -1,11 +1,10 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <title>Statistics App</title>
-  https://cdn.jsdelivr.net/npm/chart.js
-  <style>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
     body { font-family: Arial; text-align: center; padding: 20px; }
     textarea { width: 80%; height: 100px; }
     canvas { max-width: 600px; margin: 20px auto; }
